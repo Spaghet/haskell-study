@@ -1,9 +1,11 @@
 module Main (main) where
 
 import SimpleJSON
-import PutJSON
+import PrettyJSON
+import Prettify
 
+main :: IO ()
 main =
-  print (renderJValue jVal)
+  putStrLn (pretty 80 . renderJValue $ jVal)
   where
     jVal = JObject ([("Key", JString "Value"), ("k", JNumber 2)])
