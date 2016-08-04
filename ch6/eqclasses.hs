@@ -1,3 +1,6 @@
+data Color = Red | Green | Blue
+  deriving(Show)
+
 class BasicEq a where
   isEqual :: a -> a -> Bool
 
@@ -15,3 +18,18 @@ class BasicEq3 a where
   isEqual3 x y = not (isNotEqual3 x y)
   isNotEqual3 :: a -> a -> Bool
   isNotEqual3 x y = not (isEqual3 x y)
+
+instance BasicEq3 Color where
+  isEqual3 Red Red      = True
+  isEqual3 Green Green  = True
+  isEqual3 Blue Blue    = True
+  isEqual3 _  _         = False
+
+instance Read Color where
+  readsPrec _ value =
+    tryParse [("Red", Red), ("Green", Green), ("Blue", Blue)]
+    where
+      tryParse ((attempt, result):xs) =
+        if (take (length attempt) value) == attempt
+          then [(result, drop (length attempt) value)]
+          else tryParse xs
